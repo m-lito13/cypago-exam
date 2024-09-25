@@ -1,10 +1,12 @@
-﻿using ServiceInterfaces.DTO;
+﻿
+using RepositoryInterfaces;
+using RepositoryInterfaces.interfaces;
 
 namespace ServiceInterfaces
 {
     public interface IScansService
     {
         void AddScan(CreateScanDTO createScanDTO);
-        List<ScanDTO> GetScans();
+        IEnumerable<ScanDTO> GetAllScans(DTOQueryParams dtoQueryParams);
     }
 }

@@ -1,5 +1,4 @@
-*/obj/*
-*/bin/*
 *.dll
 */.vs/*
-*obj/*
+**/obj/*
+**/bin/*

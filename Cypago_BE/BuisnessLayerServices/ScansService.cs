@@ -1,29 +1,38 @@
-﻿using RepositoryInterfaces;
+﻿using Microsoft.Extensions.Logging;
+using RepositoryInterfaces;
+using RepositoryInterfaces.interfaces;
 using ServiceInterfaces;
-using ServiceInterfaces.DTO;
 
 namespace BuisnessLayerServices
 {
     public class ScansService : IScansService
     {
         private readonly IScansRepository _scansRepository;
-        private readonly IResourcesRepository _resoucresRepository;
+        private readonly ILogger _logger;
 
-        public ScansService(IScansRepository scansRepository, IResourcesRepository resoucresRepository)
+        public ScansService(
+            IScansRepository scansRepository,
+            ILogger<ScansService> logger)
         {
             _scansRepository = scansRepository;
-            _resoucresRepository = resoucresRepository;
+            _logger = logger;
         }
 
         public void AddScan(CreateScanDTO createScanDTO)
         {
+            _logger.LogInformation("AddScan enter");
+            if (createScanDTO.StartTime > createScanDTO.EndTime)
+            {
+                throw new ArgumentException("Start time cannot be greater than end time");
+            }
             _scansRepository.CreateScan(createScanDTO.StartTime, createScanDTO.EndTime);
 
         }
 
-        List<ScanDTO> IScansService.GetScans()
+        public IEnumerable<ScanDTO> GetAllScans(DTOQueryParams dtoQueryParams)
         {
-            throw new NotImplementedException();
+            return _scansRepository.GetAllScans(dtoQueryParams);
         }
+
     }
 }

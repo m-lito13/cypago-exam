@@ -4,15 +4,10 @@ using Microsoft.Extensions.Configuration;
 
 namespace DAL.Contexts
 {
-    internal class ScansContext : DbContext
+    internal class ScansContext : CommonContext
     {
-        private IConfiguration _configuration;
         public DbSet<ScanModel> ScanModels { get; set; }
-
-        public ScansContext(IConfiguration configuration)
-        {
-            _configuration = configuration;
+        public ScansContext(IConfiguration configuration) : base(configuration) { 
         }
-
     }
 }

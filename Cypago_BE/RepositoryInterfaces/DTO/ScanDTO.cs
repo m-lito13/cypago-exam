@@ -1,4 +1,4 @@
-﻿namespace ServiceInterfaces.DTO
+﻿namespace RepositoryInterfaces.interfaces
 {
     public class ScanDTO : CreateScanDTO
     {

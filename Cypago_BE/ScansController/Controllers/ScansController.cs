@@ -1,49 +1,43 @@
-﻿using CypagoApp.Requests;
+﻿using CypagoApp.Mappers.Interfaces;
+using CypagoApp.Requests;
 using Microsoft.AspNetCore.Mvc;
+using RepositoryInterfaces;
+using RepositoryInterfaces.interfaces;
 using ServiceInterfaces;
-using ServiceInterfaces.DTO;
 
 namespace CypagoApp.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ScansController : Controller
     {
-        IScansService _scansService;
+        private readonly IScansService _scansService;
+        private readonly ILogger _logger;
+        private readonly IScanRequestMapper _scanRequestMapper;
+        private readonly IQueryParamsMapper _queryParamsMapper;
 
-        public ScansController(IScansService scansService)
+        public ScansController(IScansService scansService, IScanRequestMapper scanRequestMapper, IQueryParamsMapper queryParamsMapper, ILogger<ScansController> logger)
         {
             _scansService = scansService;
+            _logger = logger;
+            _scanRequestMapper = scanRequestMapper;
+            _queryParamsMapper = queryParamsMapper;
         }
 
         [HttpGet("")]
-        public IEnumerable<Object> Get()
+        public IEnumerable<ScanDTO> Get([FromQuery] CommonQueryParameters queryParams)
         {
-            return null;
+            DTOQueryParams dtoQueryParams = _queryParamsMapper.GetDTOQueryParamsFromCommonQueryParams(queryParams);
+            return _scansService.GetAllScans(dtoQueryParams);
         }
 
-        [HttpPost("/create")]
-        public IActionResult CreateScan([FromBody] CreateScanRequest scanData)
+        [HttpPost]
+        public IActionResult CreateScan([FromBody] CreateScanRequest createScanRequest)
         {
-            //_logger.LogInformation("{controller} AddTransaction enter", nameof(ParkingTransactionsController));
-            //EntityConverter converter = new EntityConverter();
-            //TransactionDTO transactionDTO = converter.GetTransactionDTOFromRequest(trasactionData);
-            //_parkingService.AddTransaction(transactionDTO);
-
-            CreateScanDTO createScanDTO = GetCreateScanDTO(scanData);
+            _logger.LogInformation("CreateScan enter");
+            CreateScanDTO createScanDTO = _scanRequestMapper.GetCreateScanDTOFromRequest(createScanRequest);
             _scansService.AddScan(createScanDTO);
-            return StatusCode(StatusCodes.Status200OK);
-        }
-
-        private CreateScanDTO GetCreateScanDTO(CreateScanRequest createScanRequest)
-        {
-            CreateScanDTO result = new CreateScanDTO
-            {
-                StartTime = DateTime.ParseExact(createScanRequest.Started,"dd-MM-yyyy HH:mm:ss", null),
-                EndTime = DateTime.ParseExact(createScanRequest.Finished, "dd-MM-yyyy HH:mm:ss", null)
-
-            };
-            return result;
+            return Json(StatusCode(StatusCodes.Status200OK));
         }
 
     }
