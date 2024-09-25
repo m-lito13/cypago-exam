@@ -12,15 +12,29 @@ namespace DAL.Implementations
         {
             _configuration = configuration;
         }
-       
-        void IScansDAL.AddScan(DateTime start, DateTime end)
+
+        public List<ScanModel> GetAllScans(DALQueryParams queryParams)
+        {
+            using (ScansContext db = new ScansContext(_configuration))
+            {
+                List<ScanModel> result = (queryParams.UsePagination())
+                        ? db.ScanModels
+                            .Skip((queryParams.PageNum - 1) * queryParams.PageSize).Take(queryParams.PageSize).ToList()
+                        : db.ScanModels.ToList();
+
+
+                return result;
+            }
+        }
+
+        public void AddScan(DateTime start, DateTime end)
         {
             using (ScansContext db = new ScansContext(_configuration))
             {
                 ScanModel modelToAdd = new ScanModel
                 {
                     Start = start,
-                    Finish = end,
+                    Finish = end
                 };
                 db.ScanModels.Add(modelToAdd);
                 db.SaveChanges();
