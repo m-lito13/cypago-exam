@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DAL.Models
 {
     [Table("resources")]
-    [PrimaryKey(nameof(URN), nameof(DataHash))]
+    [PrimaryKey(nameof(URN), nameof(DataHash), nameof(ScanID))]
     public class ResourceModel
     {
         public string URN { get; set; }
