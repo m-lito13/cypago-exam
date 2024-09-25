@@ -10,16 +10,16 @@ function Resources(props) {
         getResources(currentScanId).then((res) => setDataFromApi(res));
     }, [props]);
 
-    
+
 
     let rows = dataFromAPI;
     let columns = [
-        { field: 'urn', headerName: 'URN', width: 125, minWidth: 150, maxWidth: 300 },
-        { field: 'name', headerName: 'Name' },
-        { field: 'data', headerName: 'Data' ,width: 125, minWidth: 150, maxWidth: 300 },
-        { field: 'resourceType', headerName: 'Type' }
+        { field: 'urn', headerName: 'URN', flex: 0.35 },
+        { field: 'name', headerName: 'Name', flex: 0.2 },
+        { field: 'data', headerName: 'Data', flex: 0.35 },
+        { field: 'resourceType', headerName: 'Type', flex: 0.1 }
     ];
-   
+
     return (
         <div>
             <DataGrid

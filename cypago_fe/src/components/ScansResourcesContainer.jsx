@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import Resources from './Resources';
 import Scans from './scans'; 
 import Typography from '@mui/material/Typography';
@@ -11,19 +12,19 @@ function ScansResourcesContainer() {
     }
 
     return (
-        <div>
-            <Typography variant="h3" component="h3">
+        <Box sx={{ m: 4 }}>
+            <Typography variant="h4" component="h4" sx={{ m: 5}} >
                 Scans and Resources
             </Typography>
-            <Grid container spacing={1} wrap='nowrap'>
-                <Grid size={3}>
+            <Grid container sx={{ m: 5 }} spacing={2} wrap='nowrap' sx={{ width: '100%' }}>
+                <Grid sx={{ width: '35%' }}>
                     <Scans scanRowClickHandler={scanRowClick}></Scans>
                 </Grid>
-                <Grid size={9}>
+                <Grid sx={{ width: '65%' }}>
                     <Resources scanid={currentScanId}></Resources>
                 </Grid>
             </Grid>
-        </div>
+        </Box>
     );
 }
 

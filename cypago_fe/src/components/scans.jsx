@@ -11,8 +11,8 @@ function Scans(props) {
 
     let rows = dataFromAPI;
     let columns = [
-        { field: 'startTime', headerName: 'Start' },
-        { field: 'endTime', headerName: 'Finish' }
+        { field: 'startTime', headerName: 'Start' ,flex :  0.5},
+        { field: 'endTime', headerName: 'Finish' , flex : 0.5 }
     ];
 
     const  handleRowClick = function(rowId) { 
@@ -23,11 +23,6 @@ function Scans(props) {
 
     return (
         <DataGrid
-            autosizeOptions={{
-                columns: ['startTime', 'endTime'],
-                includeOutliers: true,
-                includeHeaders: false,
-            }}
             rows={rows}
             columns={columns}
             initialState={{
