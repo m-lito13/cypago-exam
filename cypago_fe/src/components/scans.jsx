@@ -26,7 +26,7 @@ function Scans() {
     return (
         <div>
             <Grid container spacing={1} wrap='nowrap'>
-                <Grid size={4}>
+                <Grid size={3}>
                     <DataGrid
                         autosizeOptions={{
                             columns: ['startTime', 'endTime'],
@@ -47,7 +47,7 @@ function Scans() {
                         onRowClick={(row) => handleRowClick(row.id)}
                     />
                 </Grid>
-                <Grid size={8}>
+                <Grid size={9}>
                     <Resources scanid={currentScanId}></Resources>    
                 </Grid>
         </Grid>
