@@ -1,57 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import Grid  from '@mui/material/Grid';
 import { DataGrid } from '@mui/x-data-grid';
-import getAllScans from '../services/ScansService';
-import Button from '@mui/material/Button';
+import { getAllScans }  from '../services/DataService';
 
-function Scans() {
+function Scans(props) {
     const [dataFromAPI, setDataFromApi] = useState([]);
     useEffect(() => {
         getAllScans().then((res) => setDataFromApi(res)); 
-        
     }, []);
 
 
     let rows = dataFromAPI;
     let columns = [
-        { field: 'startTime', headerName: 'Start', width: 300 },
-        { field: 'endTime', headerName: 'Finish', width: 600 }
+        { field: 'startTime', headerName: 'Start' },
+        { field: 'endTime', headerName: 'Finish' }
     ];
 
+    const  handleRowClick = function(rowId) { 
+        if (props.scanRowClickHandler) { 
+            props.scanRowClickHandler(rowId)
+        }
+    }
 
     return (
-        <div>
-            <Grid container spacing={2}>
-            <DataGrid
-                rows={rows}
-                columns={columns}
-                initialState={{
-                    pagination: {
-                        paginationModel: {
-                            pageSize: 10,
-                        },
+        <DataGrid
+            autosizeOptions={{
+                columns: ['startTime', 'endTime'],
+                includeOutliers: true,
+                includeHeaders: false,
+            }}
+            rows={rows}
+            columns={columns}
+            initialState={{
+                pagination: {
+                    paginationModel: {
+                        pageSize: 10,
                     },
-                }}
-                pageSizeOptions={[5]}
-                disableRowSelectionOnClick
-                    />
-               yes 
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    initialState={{
-                        pagination: {
-                            paginationModel: {
-                                pageSize: 10,
-                            },
-                        },
-                    }}
-                    pageSizeOptions={[5]}
-                    disableRowSelectionOnClick
-                    />
-                
-        </Grid>
-        </div>
+                },
+            }}
+            pageSizeOptions={[5]}
+            disableRowSelectionOnClick
+            onRowClick={(row) => handleRowClick(row.id)}
+        />
+       
     );
 } 
 

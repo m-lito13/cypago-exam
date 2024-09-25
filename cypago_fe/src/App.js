@@ -1,12 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
-import Scans from './components/scans'
+import ScansResourcesContainer from './components/ScansResourcesContainer';
 
 function App() {
   return (
     <div className="App">
-          <Scans>
-          </Scans>
+          <ScansResourcesContainer>
+          </ScansResourcesContainer>
       </div>
 
   );
