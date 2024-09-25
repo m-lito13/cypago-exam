@@ -6,9 +6,7 @@ import { getResources } from '../services/DataService';
 function Resources(props) {
     const [dataFromAPI, setDataFromApi] = useState([]);
     let currentScanId = props.scanid;
-    console.log('scanID passed:' + currentScanId);
     useEffect(() => {
-        console.log('call redraw');
         getResources(currentScanId).then((res) => setDataFromApi(res));
     }, [props]);
 
@@ -16,35 +14,28 @@ function Resources(props) {
 
     let rows = dataFromAPI;
     let columns = [
-        { field: 'urn', headerName: 'URN', width: 300 },
-        { field: 'name', headerName: 'Name', width: 600 },
-        { field: 'data', headerName: 'Data', width: 300 },
-        { field: 'resourceType', headerName: 'Type', width: 600 }
+        { field: 'urn', headerName: 'URN', width: 125, minWidth: 150, maxWidth: 300 },
+        { field: 'name', headerName: 'Name' },
+        { field: 'data', headerName: 'Data' ,width: 125, minWidth: 150, maxWidth: 300 },
+        { field: 'resourceType', headerName: 'Type' }
     ];
-
-    for (let i = 0; i < rows.length; i++) { 
-        console.log('rows :' + rows[i].urn+' '+rows[i].scanID);
-    }
-
-    
+   
     return (
         <div>
-            <Grid container spacing={2}>
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    initialstate={{
-                        pagination: {
-                            paginationmodel: {
-                                pagesize: 10,
-                            },
+            <DataGrid
+                rows={rows}
+                columns={columns}
+                initialstate={{
+                    pagination: {
+                        paginationmodel: {
+                            pagesize: 10,
                         },
-                    }}
-                    pagesizeoptions={[5]}
-                    disablerowselectiononclick
-                    getRowId={(row) => row.urn+row.dataHash+row.scanID}
-                />
-            </Grid>
+                    },
+                }}
+                pagesizeoptions={[5]}
+                disablerowselectiononclick
+                getRowId={(row) => row.urn + row.dataHash + row.scanID}
+            />
         </div>
     );
 }

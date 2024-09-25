@@ -9,12 +9,13 @@ export async function getAllScans() {
 }
 export async function getResources(scanId) { 
     let dataFromApi = [];
-    console.log('getResources scanId: ' + scanId);
-    let urlWithScan = (scanId != null)
-        ? `${BASE_RESOURCES_URL}?scanid=${scanId}`
-        : BASE_RESOURCES_URL;
-    await fetch(urlWithScan)
-        .then((data) => data.json())
-        .then((data) => dataFromApi = data);
+    if (scanId != null) { 
+        let urlWithScan = (scanId != null)
+            ? `${BASE_RESOURCES_URL}?scanid=${scanId}`
+            : BASE_RESOURCES_URL;
+        await fetch(urlWithScan)
+            .then((data) => data.json())
+            .then((data) => dataFromApi = data);
+    }
     return dataFromApi;
 }
