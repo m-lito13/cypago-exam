@@ -1,44 +1,38 @@
 ﻿using DAL.Contexts;
 using DAL.Interfaces;
 using DAL.Models;
-using Microsoft.Extensions.Configuration;
 
 namespace DAL.Implementations
 {
     public class ScansDAL : IScansDAL
     {
-        IConfiguration _configuration;
-        public ScansDAL(IConfiguration configuration)
+        ScansContext _dbContext;
+        public ScansDAL(ScansContext dbContext)
         {
-            _configuration = configuration;
+            _dbContext = dbContext;
+
         }
 
         public List<ScanModel> GetAllScans(DALQueryParams queryParams)
         {
-            using (ScansContext db = new ScansContext(_configuration))
-            {
-                List<ScanModel> result = (queryParams.UsePagination())
-                        ? db.ScanModels
+            List<ScanModel> result = (queryParams.UsePagination())
+                        ? _dbContext.ScanModels
                             .Skip((queryParams.PageNum - 1) * queryParams.PageSize).Take(queryParams.PageSize).ToList()
-                        : db.ScanModels.ToList();
+                        : _dbContext.ScanModels.ToList();
 
 
-                return result;
-            }
+            return result;
         }
 
         public void AddScan(DateTime start, DateTime end)
         {
-            using (ScansContext db = new ScansContext(_configuration))
+            ScanModel modelToAdd = new ScanModel
             {
-                ScanModel modelToAdd = new ScanModel
-                {
-                    Start = start,
-                    Finish = end
-                };
-                db.ScanModels.Add(modelToAdd);
-                db.SaveChanges();
-            }
+                Start = start,
+                Finish = end
+            };
+            _dbContext.ScanModels.Add(modelToAdd);
+            _dbContext.SaveChanges();
         }
     }
 }

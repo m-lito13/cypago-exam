@@ -1,13 +1,16 @@
 ﻿using DAL.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace DAL.Contexts
 {
-    internal class ScansContext : CommonContext
+    public class ScansContext : DbContext
     {
         public DbSet<ScanModel> ScanModels { get; set; }
-        public ScansContext(IConfiguration configuration) : base(configuration) { 
+        public ScansContext(DbContextOptions options) : base(options) { }
+
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
         }
     }
 }
